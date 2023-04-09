@@ -22,6 +22,7 @@ function run_perf () {
 }
 
 echo "** PERF TIMES: $perf_times **"
+mkdir $logs_dir
 rm $logs_dir/*.log
 echo ""
 
