@@ -1,10 +1,12 @@
 #!/bin/bash
 
+compiler=gcc
 perf_times=4
 perf_flags=
 logs_dir=logs
-while getopts l:n:p: opt; do
+while getopts c:l:n:p: opt; do
     case $opt in 
+        c) compiler=$OPTARG ;;
         l) logs_dir=$OPTARG ;;
         n) perf_times=$OPTARG ;;
         p) perf_flags=$OPTARG ;;
@@ -27,30 +29,37 @@ rm $logs_dir/*.log
 echo ""
 
 
-echo "-- GCC O0"
+echo "-- $compiler O0"
 make clean
-make CFLAGS=-O0
+make CC="$compiler" CFLAGS=-O0
 echo "- Running perf"
 run_perf "O0"
 echo ""
 
-echo "-- GCC O1"
+echo "-- $compiler O1"
 make clean
-make CFLAGS=-O1
+make CC="$compiler" CFLAGS=-O1
 echo "- Running perf"
 run_perf "O1"
 echo ""
 
-echo "-- GCC O2"
+echo "-- $compiler O1 ffast-math"
 make clean
-make CFLAGS=-O2
+make CC="$compiler" CFLAGS="-O1 -ffast-math"
+echo "- Running perf"
+run_perf "O1_ffastmath"
+echo ""
+
+echo "-- $compiler O2"
+make clean
+make CC="$compiler" CFLAGS=-O2
 echo "- Running perf"
 run_perf "O2"
 echo ""
 
-echo "-- GCC O3"
+echo "-- $compiler O3"
 make clean
-make CFLAGS=-O3
+make CC="$compiler" CFLAGS=-O3
 echo "- Running perf"
 run_perf "O3"
 echo ""
