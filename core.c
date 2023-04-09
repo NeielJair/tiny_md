@@ -79,11 +79,9 @@ static double minimum_image(double cordi, const double cell_length)
 {
     // imagen más cercana
 
-    if (cordi <= -0.5 * cell_length) {
-        cordi += cell_length;
-    } else if (cordi > 0.5 * cell_length) {
-        cordi -= cell_length;
-    }
+    cordi += (cordi <= -0.5 * cell_length) * cell_length
+           - (cordi > 0.5 * cell_length)   * cell_length;
+           
     return cordi;
 }
 
